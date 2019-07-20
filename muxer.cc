@@ -5,6 +5,8 @@
 #include <uv.h>
 #include <memory>
 #include <assert.h>
+#include <nlohmann/json.hpp>
+using json = nlohmann::json;
 
 #include "protocol.hh"
 
@@ -62,8 +64,13 @@ void on_read(uv_stream_t *client, ssize_t nread, const uv_buf_t *buf) {
                     break;
                 case connection_state::reading_data:
                     {
-                        printf("got some data!\n");
-                        printf("<%s>\n", buf->base);
+                        json j;
+                        j["tool"] = harness->m.tool_id;
+                        j["stream"] = harness->m.stream_id;
+                        j["pid"] = harness->m.pid;
+                        j["data"] = buf->base;
+                        printf("<<<%s>>>\n", buf->base);
+                        printf("%s\n", j.dump().c_str());
                         /*
                         if (user_stream) {
                             uv_write_t *req = (uv_write_t *)malloc(sizeof(uv_write_t));
