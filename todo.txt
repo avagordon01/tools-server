@@ -8,3 +8,6 @@ call the harness beside hadean_init in aether
 write the server JSON wrapping code
 write the server pushing data out
 write a web frontend to the server
+
+dup2 forwarding isn't going to work if we want to wrap it in JSON in the harness
+it's gonna be a painful event loop nightmare on the harness to not do dup2 forwarding
