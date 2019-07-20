@@ -1,0 +1,10 @@
+have the server epoll over the stdout and stderr connections
+    start by printing it
+    use websockets for communication between the frontend and backend
+    wrap the data in JSON
+    write a small c webserver
+have the server listen for multiple connections and add them to an epoll list
+call the harness beside hadean_init in aether
+write the server JSON wrapping code
+write the server pushing data out
+write a web frontend to the server
