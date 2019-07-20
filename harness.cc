@@ -5,7 +5,7 @@
 #include <sys/stat.h>
 #include "tcp.hh"
 
-int tool_harness(char tool[], char *tool_args[], int in_fd, int out_fd, int err_fd) {
+void tool_harness(char tool[], char *tool_args[], int in_fd, int out_fd, int err_fd) {
     dup2(in_fd, STDIN_FILENO);
     dup2(out_fd, STDOUT_FILENO);
     //dup2(err_fd, STDOUT_FILENO);
