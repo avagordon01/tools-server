@@ -1,4 +1,4 @@
-CXXFLAGS := -Wno-write-strings
+CXXFLAGS := -g -Og -Wno-write-strings
 
 all: harness muxer
 harness: harness.o tcp.o

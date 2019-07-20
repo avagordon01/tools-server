@@ -4,7 +4,10 @@ stdenv.mkDerivation {
   name = "tools-server";
   src = ./.;
 
-  buildInputs = [ libuv libwebsockets ];
+  buildInputs = [ libuv libwebsockets nlohmann_json ];
+
+  dontStrip = true;
+  enableDebugging = true;
 
   installPhase = ''
     mkdir -p $out/bin
