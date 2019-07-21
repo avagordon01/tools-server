@@ -7,6 +7,7 @@
 #include <assert.h>
 #include <nlohmann/json.hpp>
 using json = nlohmann::json;
+#include <libwebsockets.h>
 
 #include "protocol.hh"
 
@@ -64,20 +65,24 @@ void on_read(uv_stream_t *client, ssize_t nread, const uv_buf_t *buf) {
                     break;
                 case connection_state::reading_data:
                     {
-                        json j;
-                        j["tool"] = harness->m.tool_id;
-                        j["stream"] = harness->m.stream_id;
-                        j["pid"] = harness->m.pid;
-                        j["data"] = buf->base;
-                        printf("<<<%s>>>\n", buf->base);
-                        printf("%s\n", j.dump().c_str());
-                        /*
                         if (user_stream) {
+                            json j;
+                            j["tool"] = harness->m.tool_id;
+                            j["stream"] = harness->m.stream_id;
+                            j["pid"] = harness->m.pid;
+                            /*
+                            auto js = j.dump();
+                            size_t len = js.length();
+                            send(user_stream, &len, sizeof(len), 0);
+                            send(user_stream, js.data(), len, 0);
+                            len = buf->len;
+                            send(user_stream, &len, sizeof(len), 0);
+                            send(user_stream, buf.base, len, 0);
                             uv_write_t *req = (uv_write_t *)malloc(sizeof(uv_write_t));
                             uv_buf_t wrbuf = uv_buf_init(buf->base, nread);
                             uv_write(req, (uv_stream_t*)user_stream, &wrbuf, 1, on_write);
+                            */
                         }
-                        */
                     }
                     break;
             }
@@ -136,11 +141,9 @@ int main() {
         return 1;
     }
 
-    /*
     uv_ip4_addr("0.0.0.0", 19001, &addr);
     uv_tcp_bind(&server, (const struct sockaddr*)&addr, 0);
     uv_listen((uv_stream_t*)&server, 128, on_new_user_connection);
-    */
 
     return uv_run(loop, UV_RUN_DEFAULT);
 }

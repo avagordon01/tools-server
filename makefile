@@ -1,8 +1,8 @@
 CXXFLAGS := -g -Og -Wno-write-strings
 LDLIBS := -luv
 
-all: harness muxer
+all: harness server
 harness: harness.o tcp.o
 	$(CXX) -o $@ $(LDFLAGS) $^ $(LDLIBS)
-muxer: muxer.o
+server: server.o
 	$(CXX) -o $@ $(LDFLAGS) $^ $(LDLIBS)
