@@ -4,7 +4,7 @@ stdenv.mkDerivation {
   name = "tools-server";
   src = ./.;
 
-  buildInputs = [ libuv libwebsockets nlohmann_json ];
+  buildInputs = [ libuv libwebsockets nlohmann_json openssl ];
 
   dontStrip = true;
   enableDebugging = true;
