@@ -1,4 +1,4 @@
-CXXFLAGS := -g -Og -Wno-write-strings
+CXXFLAGS := -g -Og -Wno-write-strings -fpermissive
 LDLIBS := -luv -lwebsockets
 
 all: harness server ws-server
