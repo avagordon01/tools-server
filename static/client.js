@@ -3,7 +3,6 @@ let ws = new WebSocket("ws://localhost:9999", "lws-minimal-server-echo");
 ws.onopen = function(e) {
     console.log("[open] Connection established");
     ws.binaryType = "arraybuffer"
-    ws.send('bump')
 };
 
 ws.onmessage = function(event) {

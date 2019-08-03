@@ -1,4 +1,3 @@
-figure out why the client has to 'bump' the server to get first data
 complex tool
     add input going from the client to the tool
 flashy tool

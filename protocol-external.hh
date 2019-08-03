@@ -10,8 +10,6 @@
  * that optionally may have the permessage-deflate extension negotiated on it.
  */
 
-#include <string>
-
 #if !defined (LWS_PLUGIN_STATIC)
 #define LWS_DLL
 #define LWS_INTERNAL
@@ -19,8 +17,6 @@
 #endif
 
 #include <string.h>
-
-#define RING_DEPTH 4096
 
 /* one of these created for each message */
 
@@ -33,7 +29,6 @@ struct msg {
 };
 
 struct per_session_data__minimal_server_echo {
-	struct lws_ring *ring;
 	uint32_t msglen;
 	uint32_t tail;
 	uint8_t completed:1;
@@ -99,9 +94,6 @@ callback_minimal_server_echo(struct lws *wsi, enum lws_callback_reasons reason,
 	case LWS_CALLBACK_ESTABLISHED:
 		/* generate a block of output before travis times us out */
 		lwsl_warn("LWS_CALLBACK_ESTABLISHED\n");
-		if (!pss->ring)
-			return 1;
-		pss->tail = 0;
 
 		lws_callback_on_writable(wsi);
 		break;
