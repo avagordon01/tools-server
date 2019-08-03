@@ -5,7 +5,7 @@
 #include <sys/stat.h>
 #include "tcp.hh"
 
-#include "protocol.hh"
+#include "protocol-internal.hh"
 
 int main(int argc, char *argv[]) {
     if (argc != 2) {
@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
     }
     char tool[] = "gdb";
     char *pid = argv[1];
-    char *tool_args[] = {"gdb", "-q", "-p", pid, "-ex", "c", NULL};
+    char *tool_args[] = {"gdb", "-q", "-p", pid, NULL};
 
     int in_fd = aether::tcp::connect_to_host_port_with_timeout("127.1", "19000", 10);
     int out_fd = aether::tcp::connect_to_host_port_with_timeout("127.1", "19000", 10);

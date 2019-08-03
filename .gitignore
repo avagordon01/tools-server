@@ -1,6 +1,4 @@
 *.o
 harness
-muxer
 result
 server
-ws-server
