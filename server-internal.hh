@@ -52,7 +52,7 @@ void on_read(uv_stream_t *client, ssize_t nread, const uv_buf_t *buf) {
                 case connection_state::reading_connect_message:
                     {
                         if (nread >= sizeof(connect_message)) {
-                            harness->m = *(connect_message*)buf->base;
+                            harness->m = *((connect_message*)buf->base);
                             assert(harness->m.token0 == good_token);
                             assert(harness->m.token1 == good_token);
                             harness->s = connection_state::reading_data;
@@ -65,23 +65,20 @@ void on_read(uv_stream_t *client, ssize_t nread, const uv_buf_t *buf) {
                     break;
                 case connection_state::reading_data:
                     {
-                        if (user_stream) {
+                        if (true) {
                             json j;
                             j["tool"] = harness->m.tool_id;
                             j["stream"] = harness->m.stream_id;
                             j["pid"] = harness->m.pid;
+                            bufs.push_back(j.dump());
+
                             /*
-                            auto js = j.dump();
-                            size_t len = js.length();
-                            send(user_stream, &len, sizeof(len), 0);
-                            send(user_stream, js.data(), len, 0);
-                            len = buf->len;
-                            send(user_stream, &len, sizeof(len), 0);
-                            send(user_stream, buf.base, len, 0);
-                            uv_write_t *req = (uv_write_t *)malloc(sizeof(uv_write_t));
-                            uv_buf_t wrbuf = uv_buf_init(buf->base, nread);
-                            uv_write(req, (uv_stream_t*)user_stream, &wrbuf, 1, on_write);
+                            lws_write(user_stream_wsi,
+                                bufs.back().data() + LWS_PRE,
+                                bufs.back().length() - LWS_PRE,
+                                LWS_WRITE_TEXT | LWS_WRITE_BUFLIST);
                             */
+                            //lws_write(user_stream_wsi, buf->base, buf->len, LWS_WRITE_BINARY | LWS_WRITE_BUFLIST);
                         }
                     }
                     break;
@@ -108,20 +105,5 @@ void on_new_toolstream_connection(uv_stream_t *server, int status) {
         client->s = connection_state::reading_connect_message;
     } else {
         uv_close((uv_handle_t*)client, nullptr);
-    }
-}
-
-void on_new_user_connection(uv_stream_t *server, int status) {
-    if (status < 0) {
-        fprintf(stderr, "new connection error %s\n", uv_strerror(status));
-        return;
-    }
-
-    user_stream = (uv_tcp_t*)malloc(sizeof(uv_tcp_t));
-    uv_tcp_init(loop, (uv_tcp_t*)user_stream);
-    if (uv_accept(server, (uv_stream_t*)user_stream) == 0) {
-        uv_read_start((uv_stream_t*)user_stream, alloc_buffer, on_read);
-    } else {
-        uv_close((uv_handle_t*)user_stream, nullptr);
     }
 }

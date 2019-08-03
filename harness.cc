@@ -24,15 +24,12 @@ int main(int argc, char *argv[]) {
         good_token,
         tools::gdb,
         streams::in,
-        0,
+        atoi(pid),
         good_token,
     };
-    m.stream_id = streams::in;
-    send(in_fd, &m, sizeof(m), 0);
-    m.stream_id = streams::out;
-    send(out_fd, &m, sizeof(m), 0);
-    m.stream_id = streams::err;
-    send(err_fd, &m, sizeof(m), 0);
+    m.stream_id = streams::in;  send(in_fd, &m, sizeof(m), 0);
+    m.stream_id = streams::out; send(out_fd, &m, sizeof(m), 0);
+    m.stream_id = streams::err; send(err_fd, &m, sizeof(m), 0);
 
     dup2(in_fd, STDIN_FILENO);
     dup2(out_fd, STDOUT_FILENO);
