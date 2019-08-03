@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <uv.h>
 #include <memory>
 #include <assert.h>
@@ -70,15 +71,11 @@ void on_read(uv_stream_t *client, ssize_t nread, const uv_buf_t *buf) {
                             j["tool"] = harness->m.tool_id;
                             j["stream"] = harness->m.stream_id;
                             j["pid"] = harness->m.pid;
-                            bufs.push_back(j.dump());
-
-                            /*
-                            lws_write(user_stream_wsi,
-                                bufs.back().data() + LWS_PRE,
-                                bufs.back().length() - LWS_PRE,
-                                LWS_WRITE_TEXT | LWS_WRITE_BUFLIST);
-                            */
-                            //lws_write(user_stream_wsi, buf->base, buf->len, LWS_WRITE_BINARY | LWS_WRITE_BUFLIST);
+                            std::string js = j.dump();
+                            bufs.push_back({{js.begin(), js.end()}, buf_type::text});
+                            std::vector<uint8_t> b;
+                            b.assign(buf->base, buf->base + nread);
+                            bufs.push_back({b, buf_type::binary});
                         }
                     }
                     break;

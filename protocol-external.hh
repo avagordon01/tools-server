@@ -111,11 +111,12 @@ callback_minimal_server_echo(struct lws *wsi, enum lws_callback_reasons reason,
 		lwsl_user("LWS_CALLBACK_SERVER_WRITEABLE\n");
 
         if (!bufs.empty()) {
-            bufs.front().insert(0, LWS_PRE, ' ');
+            auto buf = bufs.front();
+            buf.data.insert(buf.data.begin(), LWS_PRE, 0);
             lws_write(wsi,
-                bufs.front().data() + LWS_PRE,
-                bufs.front().length() - LWS_PRE,
-                LWS_WRITE_TEXT);
+                buf.data.data() + LWS_PRE,
+                buf.data.size() - LWS_PRE,
+                buf.type == buf_type::text ? LWS_WRITE_TEXT : LWS_WRITE_BINARY);
             bufs.pop_front();
         }
 

@@ -2,9 +2,17 @@
 #include <uv.h>
 
 #include <deque>
-#include <string>
+#include <vector>
+#include <stdint.h>
 
-std::deque<std::string> bufs {};
+enum class buf_type {
+    text, binary,
+};
+struct buf {
+    std::vector<uint8_t> data;
+    buf_type type;
+};
+std::deque<struct buf> bufs {};
 
 #include "server-external.hh"
 #include "server-internal.hh"
