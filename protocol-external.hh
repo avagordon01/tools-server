@@ -65,7 +65,6 @@ callback_minimal_server_echo(struct lws *wsi, enum lws_callback_reasons reason,
 			lws_protocol_vh_priv_get(lws_get_vhost(wsi),
 				lws_get_protocol(wsi));
 	const struct msg *pmsg;
-	struct msg amsg;
 	int m, n, flags;
 
 	switch (reason) {
@@ -102,14 +101,14 @@ callback_minimal_server_echo(struct lws *wsi, enum lws_callback_reasons reason,
 
 		lwsl_user("LWS_CALLBACK_SERVER_WRITEABLE\n");
 
-        if (!bufs.empty()) {
-            auto buf = bufs.front();
+        if (!out_bufs.empty()) {
+            auto buf = out_bufs.front();
             buf.data.insert(buf.data.begin(), LWS_PRE, 0);
             lws_write(wsi,
                 buf.data.data() + LWS_PRE,
                 buf.data.size() - LWS_PRE,
                 buf.type == buf_type::text ? LWS_WRITE_TEXT : LWS_WRITE_BINARY);
-            bufs.pop_front();
+            out_bufs.pop_front();
         }
 
 		lws_callback_on_writable(wsi);
@@ -127,14 +126,10 @@ callback_minimal_server_echo(struct lws *wsi, enum lws_callback_reasons reason,
 			  (int)pss->msglen + (int)len);
 
 		if (len) {
-			;
-			//puts((const char *)in);
-			//lwsl_hexdump_notice(in, len);
+            std::vector<uint8_t> b;
+            b.assign((uint8_t*)in, (uint8_t*)in + len);
+            in_bufs.push_back({b, 0});
 		}
-
-		amsg.first = lws_is_first_fragment(wsi);
-		amsg.final = lws_is_final_fragment(wsi);
-		amsg.binary = lws_frame_is_binary(wsi);
 
 		lws_callback_on_writable(wsi);
 

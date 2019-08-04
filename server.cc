@@ -8,14 +8,19 @@
 enum class buf_type {
     text, binary,
 };
-struct buf {
+struct out_buf {
     std::vector<uint8_t> data;
     buf_type type;
 };
-std::deque<struct buf> bufs {};
+struct in_buf {
+    std::vector<uint8_t> data;
+    size_t sent;
+};
+std::deque<struct out_buf> out_bufs {};
+std::deque<struct in_buf> in_bufs {};
 
-#include "server-external.hh"
 #include "server-internal.hh"
+#include "server-external.hh"
 
 int main() {
     loop = uv_default_loop();
@@ -31,6 +36,10 @@ int main() {
         fprintf(stderr, "listen error %s\n", uv_strerror(r));
         return 1;
     }
+
+    uv_prepare_t prepare;
+    uv_prepare_init(loop, &prepare);
+    uv_prepare_start(&prepare, on_prepare);
 
     create_lws_context_with_foreign_loop(loop);
     if (!context) {

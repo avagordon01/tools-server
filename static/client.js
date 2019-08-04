@@ -12,6 +12,7 @@ ws.onmessage = function(event) {
     } else {
         console.log(event.data)
     }
+    ws.send('test')
 };
 
 ws.onclose = function(event) {

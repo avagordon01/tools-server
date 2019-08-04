@@ -13,7 +13,6 @@ using json = nlohmann::json;
 #include "protocol-internal.hh"
 
 uv_loop_t *loop;
-uv_tcp_t *user_stream = nullptr;
 
 enum class connection_state {
     starting,
@@ -27,6 +26,8 @@ struct harness_tcp_t {
     connection_state s;
 };
 
+std::vector<harness_tcp_t> toolstreams;
+
 void alloc_buffer(uv_handle_t *handle, size_t suggested_size, uv_buf_t *buf) {
     buf->base = (char*)malloc(suggested_size);
     buf->len = suggested_size;
@@ -37,6 +38,20 @@ void on_write(uv_write_t *req, int status) {
         fprintf(stderr, "write error %s\n", uv_strerror(status));
     }
     free(req);
+}
+
+void on_prepare(uv_prepare_t* prepare) {
+    while (!in_bufs.empty()) {
+        for (auto toolstream: toolstreams) {
+            uv_stream_t* client = (uv_stream_t*)&toolstream;
+
+            uv_buf_t uv_b = uv_buf_init("bt\n", 3);
+            uv_write_t *req = (uv_write_t*)malloc(sizeof(uv_write_t));
+            req->handle = client;
+            uv_write(req, client, &uv_b, 1, on_write);
+        }
+        in_bufs.pop_back();
+    }
 }
 
 void on_read(uv_stream_t *client, ssize_t nread, const uv_buf_t *buf) {
@@ -72,10 +87,10 @@ void on_read(uv_stream_t *client, ssize_t nread, const uv_buf_t *buf) {
                             j["stream"] = harness->m.stream_id;
                             j["pid"] = harness->m.pid;
                             std::string js = j.dump();
-                            bufs.push_back({{js.begin(), js.end()}, buf_type::text});
+                            out_bufs.push_back({{js.begin(), js.end()}, buf_type::text});
                             std::vector<uint8_t> b;
                             b.assign(buf->base, buf->base + nread);
-                            bufs.push_back({b, buf_type::binary});
+                            out_bufs.push_back({b, buf_type::binary});
                         }
                     }
                     break;
@@ -94,7 +109,8 @@ void on_new_toolstream_connection(uv_stream_t *server, int status) {
         return;
     }
 
-    harness_tcp_t *client = (harness_tcp_t*)malloc(sizeof(harness_tcp_t));
+    toolstreams.push_back({});
+    harness_tcp_t *client = &toolstreams.back();
     client->s = connection_state::starting;
     uv_tcp_init(loop, (uv_tcp_t*)client);
     if (uv_accept(server, (uv_stream_t*)client) == 0) {
