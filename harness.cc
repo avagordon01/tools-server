@@ -13,18 +13,20 @@ int main(int argc, char *argv[]) {
         return 1;
     }
     char tool[] = "gdb";
-    char *pid = argv[1];
-    char *tool_args[] = {"gdb", "-q", "-p", pid, NULL};
+    char *pid_text = argv[1];
+    char *tool_args[] = {"gdb", "-q", "-p", pid_text, NULL};
 
     int in_fd = aether::tcp::connect_to_host_port_with_timeout("127.1", "19000", 10);
     int out_fd = aether::tcp::connect_to_host_port_with_timeout("127.1", "19000", 10);
     int err_fd = aether::tcp::connect_to_host_port_with_timeout("127.1", "19000", 10);
 
+    uint64_t pid = atoi(pid_text);
+
     connect_message m = {
         good_token,
         tools::gdb,
         streams::in,
-        atoi(pid),
+        pid,
         good_token,
     };
     m.stream_id = streams::in;  send(in_fd, &m, sizeof(m), 0);
