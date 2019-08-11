@@ -27,8 +27,9 @@ ws.onerror = function(error) {
 };
 
 document.forms.cli.onsubmit = function(event) {
-    document.forms.cli.output.value += '\n'
-    ws.send(document.forms.cli.input.value + '\n')
+    input = document.forms.cli.input.value + '\n'
+    document.forms.cli.output.value += input
+    ws.send(input)
     document.forms.cli.input.value = ''
     event.preventDefault();
     return false;
