@@ -19,12 +19,12 @@ NLOHMANN_JSON_SERIALIZE_ENUM(streams, {
     {streams::err, "err"},
 })
 
-const uint64_t good_token = 0x12345678;
+const uint64_t good_token = 0x0123456789abcdef;
 
 struct connect_message {
-    uint64_t token0;
+    uint64_t token0 = good_token;
     tools tool_id;
     streams stream_id;
     uint64_t pid;
-    uint64_t token1;
+    uint64_t token1 = good_token;
 };

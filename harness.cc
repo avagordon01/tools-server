@@ -22,13 +22,9 @@ int main(int argc, char *argv[]) {
 
     uint64_t pid = atoi(pid_text);
 
-    connect_message m = {
-        good_token,
-        tools::gdb,
-        streams::in,
-        pid,
-        good_token,
-    };
+    connect_message m {};
+    m.tool_id = tools::gdb;
+    m.pid = pid;
     m.stream_id = streams::in;  send(in_fd, &m, sizeof(m), 0);
     m.stream_id = streams::out; send(out_fd, &m, sizeof(m), 0);
     m.stream_id = streams::err; send(err_fd, &m, sizeof(m), 0);
