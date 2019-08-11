@@ -26,7 +26,7 @@ struct harness_tcp_t {
     connection_state s;
 };
 
-std::vector<harness_tcp_t> toolstreams;
+std::vector<harness_tcp_t*> toolstreams;
 
 void alloc_buffer(uv_handle_t *handle, size_t suggested_size, uv_buf_t *buf) {
     buf->base = (char*)malloc(suggested_size);
@@ -42,8 +42,14 @@ void on_write(uv_write_t *req, int status) {
 
 void on_prepare(uv_prepare_t* prepare) {
     while (!in_bufs.empty()) {
-        for (auto toolstream: toolstreams) {
-            uv_stream_t* client = (uv_stream_t*)&toolstream;
+        for (size_t i = 0; i < toolstreams.size(); i++) {
+            harness_tcp_t* toolstream = toolstreams[i];
+            if (toolstream->s != connection_state::reading_data)
+                continue;
+            if (toolstream->m.stream_id != streams::in)
+                continue;
+            printf("got an input stream\n");
+            uv_stream_t* client = (uv_stream_t*)toolstream;
 
             uv_buf_t uv_b = uv_buf_init("bt\n", 3);
             uv_write_t *req = (uv_write_t*)malloc(sizeof(uv_write_t));
@@ -109,8 +115,8 @@ void on_new_toolstream_connection(uv_stream_t *server, int status) {
         return;
     }
 
-    toolstreams.push_back({});
-    harness_tcp_t *client = &toolstreams.back();
+    toolstreams.push_back(new harness_tcp_t);
+    harness_tcp_t *client = toolstreams.back();
     client->s = connection_state::starting;
     uv_tcp_init(loop, (uv_tcp_t*)client);
     if (uv_accept(server, (uv_stream_t*)client) == 0) {
