@@ -48,10 +48,9 @@ void on_prepare(uv_prepare_t* prepare) {
                 continue;
             if (toolstream->m.stream_id != streams::in)
                 continue;
-            printf("got an input stream\n");
             uv_stream_t* client = (uv_stream_t*)toolstream;
 
-            uv_buf_t uv_b = uv_buf_init("bt\n", 3);
+            uv_buf_t uv_b = uv_buf_init(in_bufs.back().data.data(), in_bufs.back().data.size());
             uv_write_t *req = (uv_write_t*)malloc(sizeof(uv_write_t));
             req->handle = client;
             uv_write(req, client, &uv_b, 1, on_write);
