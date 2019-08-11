@@ -1,9 +1,5 @@
-wtf the toolstreams vector has two of the three elements' m and s fields zero
-    but they have all read/written data
-    and the uv loop tcp handles are good
-    why does uv have seperate handles to the ones passed in
-complex tool
-    add input going from the client to the tool
+make the input/output nicer
+    add a text input field and text output field
 flashy tool
     change from gdb to something that prints out metrics regularly
     most flashy would be netvis integration
