@@ -8,7 +8,7 @@ ws.onopen = function(e) {
 ws.onmessage = function(event) {
     if (event.data instanceof Blob || event.data instanceof ArrayBuffer) {
         let dec = new TextDecoder()
-        console.log(dec.decode(event.data))
+        document.forms.cli.output.value += dec.decode(event.data)
     } else {
         console.log(event.data)
     }
@@ -25,3 +25,11 @@ ws.onclose = function(event) {
 ws.onerror = function(error) {
     console.log(`[error] ${error.message}`);
 };
+
+document.forms.cli.onsubmit = function(event) {
+    document.forms.cli.output.value += '\n'
+    ws.send(document.forms.cli.input.value + '\n')
+    document.forms.cli.input.value = ''
+    event.preventDefault();
+    return false;
+}
