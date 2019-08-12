@@ -1,3 +1,11 @@
+add a way to select which pids to send input to
+    backend
+        accept a list of pids to broadcast the message to
+    frontend
+        add an input bar seperate from each cli
+        add a way to select which clis to broadcast to
+            (currently just tickboxes?)
+        and a button to invert the selection
 flashy tool
     change from gdb to something that prints out metrics regularly
     most flashy would be netvis integration
