@@ -8,13 +8,13 @@
     <div id="cli-container">
         <template id="cli-template">
             <form class="cli">
-                <output name="pid"></output>
+                pid <output name="pid" class="cli-title"></output>
                 <br>
                 <div class="scroll">
-                    <output name="output" class="outputs"></output>
+                    <output name="output" class="cli-output"></output>
                 </div>
                 <br>
-                <input type="text" name="input" autofocus>
+                &gt; <input type="text" name="input" autofocus class="cli-input">
             </form>
         </template>
     </div>
