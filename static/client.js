@@ -33,6 +33,7 @@ ws.onmessage = function(event) {
         }
         let dec = new TextDecoder()
         cli.output.value += dec.decode(event.data)
+        cli.output.scrollIntoView(false)
     } else {
         metadata = JSON.parse(event.data)
     }
