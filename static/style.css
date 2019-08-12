@@ -12,9 +12,10 @@ body {
 
 #cli-container {
     display: grid;
+    grid-auto-flow: row;
+    grid-template-columns: repeat(auto-fit, 250px);
 }
 .cli {
-    width: 25%;
     background-color: #eee;
     font-family: monospace;
     font-size: 12px;
