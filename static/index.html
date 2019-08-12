@@ -1,10 +1,23 @@
 <link rel="stylesheet" href="style.css">
 
-<h1>dashboard</h1>
+<header>
+    <h1>dashboard</h1>
+</header>
 
-<form name="cli" class="cli">
-    <output name="output" class="output"></output><br>
-    <input type="text" name="input" autofocus>
-</form>
+<content>
+    <div id="cli-container">
+        <template id="cli-template">
+            <form class="cli">
+                <output name="pid"></output>
+                <br>
+                <div class="scroll">
+                    <output name="output" class="outputs"></output>
+                </div>
+                <br>
+                <input type="text" name="input" autofocus>
+            </form>
+        </template>
+    </div>
+</content>
 
 <script src="client.js"></script>

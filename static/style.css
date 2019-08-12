@@ -1,6 +1,7 @@
-html {
-    width: 100%;
+* {
+    box-sizing: border-box;
 }
+
 body {
     width: 100%;
     margin: 0;
@@ -9,14 +10,19 @@ body {
     font-size: 75%;
 }
 
+#cli-container {
+    display: grid;
+}
 .cli {
+    width: 25%;
     background-color: #eee;
-    padding: 5px;
-    margin: 5px;
-    margin-bottom: 0px;
     font-family: monospace;
     font-size: 12px;
 }
-.output {
+.scroll {
+    overflow: scroll;
+    height: 300px;
+}
+.outputs {
     white-space: pre-wrap;
 }
