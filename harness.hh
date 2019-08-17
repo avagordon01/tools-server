@@ -22,6 +22,10 @@ void harness_this_process_all_tools() {
 }
 
 void harness(tools tool, int pid) {
+    if (fork() != 0) {
+        return;
+    }
+
     int in_fd = aether::tcp::connect_to_host_port_with_timeout("127.1", "1025", 10);
     int out_fd = aether::tcp::connect_to_host_port_with_timeout("127.1", "1025", 10);
     int err_fd = aether::tcp::connect_to_host_port_with_timeout("127.1", "1025", 10);
