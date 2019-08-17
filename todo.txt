@@ -1,12 +1,20 @@
-add a way to select which pids to send input to
-    backend
-        accept a list of pids to broadcast the message to
-    frontend
-        add an input bar seperate from each cli
-        add a way to select which clis to broadcast to
-            (currently just tickboxes?)
-        and a button to invert the selection
-flashy tool
-    change from gdb to something that prints out metrics regularly
-    most flashy would be netvis integration
-    start with either ss loop or time loop
+protocol things
+    specify which pid(s) to send message to
+    send process name as well as pid
+interface things
+    add an input bar seperate from each cli
+    add a way to select which clis to broadcast to
+        (currently just tickboxes?)
+    and a button to invert the selection
+    change the display order
+        most recent output
+        least recent output
+    change the display
+        tabs
+        grid
+    hide/show some clis
+    filter clis
+        by process name
+netvis integration
+    ss in a loop
+    "time" in a loop, but with memory and cpu time stats
