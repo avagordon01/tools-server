@@ -7,21 +7,7 @@
 
 #include "protocol-internal.hh"
 
-void harness(tools tool, int pid);
-
-void harness_all_tools(int pid) {
-    harness(tools::gdb, pid);
-}
-
-void harness_this_process(tools tool) {
-    harness(tool, getpid());
-}
-
-void harness_this_process_all_tools() {
-    harness_this_process(tools::gdb);
-}
-
-void harness(tools tool, int pid) {
+void harness_start(int pid) {
     if (fork() != 0) {
         return;
     }
@@ -31,6 +17,7 @@ void harness(tools tool, int pid) {
     int err_fd = aether::tcp::connect_to_host_port_with_timeout("127.1", "1025", 10);
 
     connect_message m {};
+    tools tool = tools::gdb;
     m.tool_id = tool;
     m.pid = pid;
     m.stream_id = streams::in;  send(in_fd, &m, sizeof(m), 0);

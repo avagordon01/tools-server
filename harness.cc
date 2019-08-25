@@ -11,7 +11,7 @@ int main(int argc, char *argv[]) {
     }
     for (size_t i = 1; i < argc; i++) {
         uint64_t pid = atoi(argv[i]);
-        harness(tools::gdb, pid);
+        harness_start(pid);
     }
 
     waitpid(-1, NULL, 0);
