@@ -7,7 +7,13 @@
 
 #include "protocol-internal.hh"
 
-void harness_start(int pid) {
+void harness_start_pid(int pid);
+
+void harness_start() {
+    harness_start_pid(getpid());
+}
+
+void harness_start_pid(int pid) {
     if (fork() != 0) {
         return;
     }
