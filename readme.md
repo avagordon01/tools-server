@@ -46,3 +46,7 @@ this solves the problems outlined above
  - a crash wont cascade because gdb gets control as soon as the crash happens, stopping any communication
    - the cascade will only happen if the _absence_ of timely communication causes other crashes
  - there is no more relying on partial coredumps or not having the process around still
+
+## architecture
+
+![architecture diagram](architecture.png)
