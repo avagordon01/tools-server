@@ -32,7 +32,11 @@ ws.onmessage = function(event) {
             }
         }
         let dec = new TextDecoder()
-        cli.output.value += dec.decode(event.data)
+        new_output = dec.decode(event.data)
+        if (new_output.startsWith("(gdb) ")) {
+            cli.style.display = "block";
+        }
+        cli.output.value += new_output
         cli.output.scrollIntoView(false)
     } else {
         metadata = JSON.parse(event.data)

@@ -22,6 +22,7 @@ form {
     font-size: 12px;
     margin: 4px;
     width: 240px;
+    display: none;
 }
 .scroll {
     overflow-y: auto;
