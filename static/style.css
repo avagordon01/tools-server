@@ -21,12 +21,13 @@ form {
     background-color: #eee;
     font-family: monospace;
     font-size: 12px;
-    padding: 4px;
+    margin: 4px;
 }
 .scroll {
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
     height: 300px;
+    display: block;
 }
 .cli-title {
     font-weight: bold;
