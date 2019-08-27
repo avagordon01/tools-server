@@ -10,9 +10,8 @@ body {
 }
 
 #cli-container {
-    display: grid;
-    grid-auto-flow: row;
-    grid-template-columns: repeat(auto-fit, 250px);
+    display: flex;
+    flex-wrap: wrap;
 }
 form {
     margin: 0px;
@@ -22,6 +21,7 @@ form {
     font-family: monospace;
     font-size: 12px;
     margin: 4px;
+    width: 240px;
 }
 .scroll {
     overflow-y: auto;
