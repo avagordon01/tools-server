@@ -1,4 +1,4 @@
-# gdb integration (part of tools server)
+# gdb dashboard
 
 ## motivation
 
