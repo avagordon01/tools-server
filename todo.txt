@@ -1,12 +1,12 @@
-zircon team help
+need to fix before merging
+and may need zircon team help
     scheduler ip is in an environment variable
     put it in a submodule in zircon
     integrate it with the build system
-    maybe use cmake or meson to get pkgconfig
+    figure out how to have gdb exit on good program exit, to not leak processes
+        killall gdb works
 
 red animated highlight on activity
-figure out how to have gdb exit on good program exit, to not leak processes
-    or just killall gdb
 
 full ip+pid (or hadean pid)
 the other input not considered is signals, sending sigint to gdb for example
