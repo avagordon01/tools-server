@@ -8,7 +8,7 @@ and may need zircon team help
 
 red animated highlight on activity
 
-full ip+pid (or hadean pid)
+full ip+pid
 the other input not considered is signals, sending sigint to gdb for example
     buttons on each cli to send sigint or other signal
     remotebreak doesnt seem to work

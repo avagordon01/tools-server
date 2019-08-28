@@ -2,7 +2,7 @@
 
 ## motivation
 
-debugging hadeanos programs is _hard_.
+debugging parallel and/or distributed programs is _hard_.
 we wouldve saved many _many_ hours of developer time by having a tool like this.
 (and saved even more time with similar tool integrations based on the tool server, looking at you perf, ss, strace, etc)
 
