@@ -11,7 +11,7 @@ int main(int argc, char *argv[]) {
     }
     for (size_t i = 1; i < argc; i++) {
         uint64_t pid = atoi(argv[i]);
-        harness_start_pid(pid);
+        harness_start_pid(pid, "127.1", "1025");
     }
 
     waitpid(-1, NULL, 0);

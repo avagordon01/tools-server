@@ -7,20 +7,20 @@
 
 #include "protocol-internal.hh"
 
-void harness_start_pid(int pid);
+void harness_start_pid(int pid, char* server_ip, char* server_port);
 
 void harness_start() {
-    harness_start_pid(getpid());
+    harness_start_pid(getpid(), "127.1", "1025");
 }
 
-void harness_start_pid(int pid) {
+void harness_start_pid(int pid, char* server_ip, char* server_port) {
     if (fork() != 0) {
         return;
     }
 
-    int in_fd = aether::tcp::connect_to_host_port_with_timeout("127.1", "1025", 10);
-    int out_fd = aether::tcp::connect_to_host_port_with_timeout("127.1", "1025", 10);
-    int err_fd = aether::tcp::connect_to_host_port_with_timeout("127.1", "1025", 10);
+    int in_fd = aether::tcp::connect_to_host_port_with_timeout(server_ip, server_port, 10);
+    int out_fd = aether::tcp::connect_to_host_port_with_timeout(server_ip, server_port, 10);
+    int err_fd = aether::tcp::connect_to_host_port_with_timeout(server_ip, server_port, 10);
 
     connect_message m {};
     tools tool = tools::gdb;
