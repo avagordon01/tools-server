@@ -7,13 +7,13 @@
 
 #include "protocol-internal.hh"
 
-void harness_start_pid(int pid, char* server_ip, char* server_port);
+void harness_start_pid(int pid, const char* server_ip, const char* server_port);
 
 void harness_start() {
     harness_start_pid(getpid(), "127.1", "1025");
 }
 
-void harness_start_pid(int pid, char* server_ip, char* server_port) {
+void harness_start_pid(int pid, const char* server_ip, const char* server_port) {
     if (fork() != 0) {
         return;
     }
